@@ -218,7 +218,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	
     	if(strstr($related_field_title, '{')) {
 	        $related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-	    	$select .= $this->build_concat_from_template($related_field_title, $this->ESCAPE_CHAR, $this->ESCAPE_CHAR, $this->protect_identifiers($field_name_hash));
+            $select .= $this->build_concat_from_template($related_field_title, $this->ESCAPE_CHAR, $this->ESCAPE_CHAR, $this->protect_identifiers($field_name_hash));
     	} else {
 	    	$select .= $this->protect_identifiers($related_table.'.'.$related_field_title) . ' as ' . $this->protect_identifiers($field_name_hash);
     	}
@@ -247,7 +247,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	$field_name_hash = $this->_unique_field_name($related_field_title);
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            	$select .= $this->build_concat_from_template(
+            $select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
@@ -291,7 +291,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
 
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            	$select .= $this->build_concat_from_template(
+            $select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
