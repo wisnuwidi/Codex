@@ -19,13 +19,23 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     }
 
     public function build_concat_from_template($template, $prefix_replacement='', $suffix_replacement='', $as=NULL){
-        if($this->CAPABLE_CONCAT)
-            $concat_str = "CONCAT('" . str_replace(array("{", "}"), array("', COALESCE(".$prefix_replacement, $suffix_replacement.", ''),'"), str_replace("'","\\'",$template)) . "')";
-        else
+        //$concat_str = "CONCAT('" . str_replace(array("{", "}"), array("', COALESCE(".$prefix_replacement, $suffix_replacement.", ''),'"), str_replace("'","\\'", $template)) . "')";
+        if($this->CAPABLE_CONCAT){
+            $arrayString = explode('}', $template);
+            $cleanString = preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(array('{', '&nbsp;'), '', $arrayString));
+            foreach ($cleanString as $string){
+                if(!empty($string)){
+                    $strings[] = "coalesce({$string})";
+                }
+            }
+            $concat_str = implode(', ', $strings);
+        } else {
             $concat_str = "('" . str_replace(array("{", "}"), array("' || COALESCE(".$replacement, ", '') || '"), str_replace("'","\\'",$template)) . "')";
-
-        if(isset($as))
-            $concat_str .= " as ".$as;
+        }
+        
+        if(isset($as)) $concat_str .= " as " . $as;
+        
+        return $concat_str;
     }
 
     function get_list() {
@@ -205,36 +215,22 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	$field_name_hash = $this->_unique_field_name($field_name);
     	$related_primary_key = $this->get_primary_key($related_table);
     	$select = $this->protect_identifiers($related_table).'.'.$this->protect_identifiers($related_primary_key).', ';
-
-    	if(strstr($related_field_title,'{')) {
-    		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            $select .= $this->build_concat_from_template(
-                $related_field_title,
-                $this->ESCAPE_CHAR,
-                $this->ESCAPE_CHAR,
-                $this->protect_identifiers($field_name_hash)
-            );
+    	
+    	if(strstr($related_field_title, '{')) {
+	        $related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
+	    	$select .= $this->build_concat_from_template($related_field_title, $this->ESCAPE_CHAR, $this->ESCAPE_CHAR, $this->protect_identifiers($field_name_hash));
     	} else {
-	    	$select .= $this->protect_identifiers($related_table.'.'.$related_field_title).' as '.$this->protect_identifiers($field_name_hash);
+	    	$select .= $this->protect_identifiers($related_table.'.'.$related_field_title) . ' as ' . $this->protect_identifiers($field_name_hash);
     	}
 
-    	$this->db->select($select,false);
-    	if($where_clause !== null)
-    		$this->db->where($where_clause);
+    	$this->db->select($select, false);
+    	
+    	if($where_clause !== null) $this->db->where($where_clause);
+    	if($where_clause !== null) $this->db->where($where_clause);
+    	if($limit !== null) $this->db->limit($limit);
+    	if($search_like !== null) $this->db->having($this->protect_identifiers($field_name_hash)." LIKE '%".$this->db->escape_like_str($search_like)."%'");
 
-    	if($where_clause !== null)
-    		$this->db->where($where_clause);
-
-    	if($limit !== null)
-    		$this->db->limit($limit);
-
-    	if($search_like !== null)
-    		$this->db->having($this->protect_identifiers($field_name_hash)." LIKE '%".$this->db->escape_like_str($search_like)."%'");
-
-    	$order_by !== null
-    		? $this->db->order_by($order_by)
-    		: $this->db->order_by($field_name_hash);
-
+    	$order_by !== null ? $this->db->order_by($order_by) : $this->db->order_by($field_name_hash);    	
     	$results = $this->db->get($related_table)->result();
 
     	foreach($results as $row) {
@@ -251,7 +247,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	$field_name_hash = $this->_unique_field_name($related_field_title);
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            $select .= $this->build_concat_from_template(
+            	$select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
@@ -295,12 +291,12 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
 
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            $select .= $this->build_concat_from_template(
-                    $related_field_title,
-                    $this->ESCAPE_CHAR,
-                    $this->ESCAPE_CHAR,
-                    $this->protect_identifiers($field_name_hash)
-                );
+            	$select .= $this->build_concat_from_template(
+                $related_field_title,
+                $this->ESCAPE_CHAR,
+                $this->ESCAPE_CHAR,
+                $this->protect_identifiers($field_name_hash)
+            );
     	} else {
     		$select .= "$related_field_title as $field_name_hash";
     	}
@@ -379,7 +375,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
         return "(
         --  SELECT GROUP_CONCAT(DISTINCT ".$this->protect_identifiers($field).")
             SELECT array_agg(".$this->protect_identifiers($field).")
-                FROM ".$this->protect_identifiers($selection_table) ."
+                FROM ".$this->protect_identifiers($selection_table)."
             LEFT JOIN ".$this->protect_identifiers($relation_table)."
                 ON ".$this->protect_identifiers($relation_table.".".$primary_key_alias_to_selection_table)." = ".$this->protect_identifiers($selection_table.".".$primary_key_selection_table) ."
             WHERE ".$this->protect_identifiers($relation_table.".".$primary_key_alias_to_this_table)." = ".$this->protect_identifiers($this->table_name.".".$this->get_primary_key($this->table_name))."
