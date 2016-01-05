@@ -50,14 +50,14 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     			$unique_join_name = $this->_unique_join_name($field_name);
     			$unique_field_name = $this->_unique_field_name($field_name);
     			
-	                if(strstr($related_field_title,'{')) {
-	                    $related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-	                    $select .= ", ".$this->build_concat_from_template(
-	                        $related_field_title,
-	                        $this->protect_identifiers($unique_join_name).".".$this->ESCAPE_CHAR,
-	                        $this->ESCAPE_CHAR,
-	                        $this->protect_identifiers($unique_field_name)
-	                    );
+                if(strstr($related_field_title,'{')) {
+                    $related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
+                    $select .= ", ".$this->build_concat_from_template(
+                        $related_field_title,
+                        $this->protect_identifiers($unique_join_name).".".$this->ESCAPE_CHAR,
+                        $this->ESCAPE_CHAR,
+                        $this->protect_identifiers($unique_field_name)
+                    );
     			} else {
     				$select .= ', ' . $this->protect_identifiers($unique_join_name. '.'. $related_field_title).' AS '. $this->protect_identifiers($unique_field_name);
     			}
@@ -69,7 +69,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	}
 
     	if(!empty($this->relation_n_n)) {
-		$select = $this->relation_n_n_queries($select);
+			$select = $this->relation_n_n_queries($select);
     	}
 
     	$this->db->select($select, false);
@@ -206,15 +206,15 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     }
 
     function join_relation($field_name, $related_table, $related_field_title) {
-	$related_primary_key = $this->get_primary_key($related_table);
+		$related_primary_key = $this->get_primary_key($related_table);
 
-	if($related_primary_key !== false) {
-		$unique_name = $this->_unique_join_name($field_name);
-		$this->build_db_join_relation($related_table, $unique_name, $related_primary_key, $field_name);
-		$this->relation[$field_name] = array($field_name, $related_table, $related_field_title);
+		if($related_primary_key !== false) {
+			$unique_name = $this->_unique_join_name($field_name);
+			$this->build_db_join_relation($related_table, $unique_name, $related_primary_key, $field_name);
+			$this->relation[$field_name] = array($field_name, $related_table, $related_field_title);
 
-		return true;
-	}
+			return true;
+		}
 
     	return false;
     }
@@ -256,7 +256,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	$field_name_hash = $this->_unique_field_name($related_field_title);
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            	$select .= $this->build_concat_from_template(
+            $select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
@@ -277,9 +277,9 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	}
     	$this->db->where($field_info->primary_key_alias_to_this_table, $primary_key_value);
     	$this->db->join(
-		$field_info->selection_table,
-		"{$field_info->relation_table}.{$field_info->primary_key_alias_to_selection_table} = {$field_info->selection_table}.{$selection_primary_key}"
-	);
+			$field_info->selection_table,
+			"{$field_info->relation_table}.{$field_info->primary_key_alias_to_selection_table} = {$field_info->selection_table}.{$selection_primary_key}"
+		);
     	$results = $this->db->get($field_info->relation_table)->result();
 
     	$results_array = array();
@@ -300,7 +300,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
 
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            	$select .= $this->build_concat_from_template(
+            $select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
