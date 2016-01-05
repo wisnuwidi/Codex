@@ -206,7 +206,7 @@ class grocery_crud_model_Postgre extends grocery_CRUD_Generic_Model {
 
     function join_relation($field_name, $related_table, $related_field_title) {
 		$related_primary_key = $this->get_primary_key($related_table);
-
+		
 		if($related_primary_key !== false) {
 			$unique_name = $this->_unique_join_name($field_name);
 			$this->build_db_join_relation($related_table, $unique_name, $related_primary_key, $field_name);
