@@ -36,6 +36,7 @@ class MY_Auth extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+
         $this->load->library(array(
             'ion_auth',
             'form_validation'

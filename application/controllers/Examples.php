@@ -4,17 +4,19 @@ if (! defined('BASEPATH')) exit('No direct script access allowed');
 class Examples extends MY_Controller {
     protected $prefix = 'concept_';
     protected $file = 'example.php';
-    protected $auth;
+    protected $auth = false;
 
     public function __construct() {
         parent::__construct();
 
         $this->load->database();
         $this->load->helper('url');
-        $this->auth = $this->authentication();
+        $this->load->library('session');
     }
 
     public function output($output = null) {
+        if(empty($this->session->userdata('user_data')))
+            $this->authentication();
         $this->render($this->file, $output);
     }
 
