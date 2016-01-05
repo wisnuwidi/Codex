@@ -27,10 +27,10 @@
 | -------------------------------------------------------------------------
 | Database table names.
 */
-$config['tables']['users']           = 'users';
-$config['tables']['groups']          = 'groups';
-$config['tables']['users_groups']    = 'users_groups';
-$config['tables']['login_attempts']  = 'login_attempts';
+$config['tables']['users']           = 'concept_users';
+$config['tables']['groups']          = 'concept_groups';
+$config['tables']['users_groups']    = 'concept_users_groups';
+$config['tables']['login_attempts']  = 'concept_login_attempts';
 
 /*
  | Users table column and Group table column you want to join WITH.

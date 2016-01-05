@@ -29,7 +29,7 @@ class MY_Controller extends CI_Controller {
         $this->load->library('grocery_CRUD');
         $crud = new Grocery_CRUD();
 
-        if (file_exists(APPPATH . '/models/' . $model_name . '.php')) {
+        if (file_exists(APPPATH . 'models/' . $model_name . '.php')) {
             $this->load->model($this->includePath . 'grocery_crud_model');
             $this->load->model($this->systemPath . 'grocery_crud_generic_model');
             $this->load->model($model_name, $model_alias);
@@ -44,6 +44,6 @@ class MY_Controller extends CI_Controller {
 
     public function authentication() {
         $auth = new MY_Auth();
-        return $auth->index();
+        return $auth->index('auth/');
     }
 }
