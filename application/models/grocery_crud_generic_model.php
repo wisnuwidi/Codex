@@ -139,6 +139,15 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
      * @param string $getObject
      */
     protected function getTableColumns($table, $field = false, $result = false, $getObject = false){
+        
+        /* Get Table Column(s)
+         * ================================================
+         * ini belum kepake si, buat apaan... Tadinya mau 
+         * buat crud model di fungsi or_like-nya 
+         * buat ngambil column type dari field tabelnya :D
+         * ================================================
+         */
+        
         $where = false;
         if($field != false){
             $where = "  and column_name = '{$field}' ";
@@ -188,7 +197,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	if(!empty($this->relation_n_n)) {
     		$select = $this->protect_identifiers($this->table_name).'.'.'*';
     		$select = $this->relation_n_n_queries($select);
-    		$this->db->select($select,false);
+    		$this->db->select($select, false);
 
     		return $this->db->get($this->table_name)->num_rows();
     	}
@@ -218,7 +227,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	
     	if(strstr($related_field_title, '{')) {
 	        $related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-	    	$select .= $this->build_concat_from_template($related_field_title, $this->ESCAPE_CHAR, $this->ESCAPE_CHAR, $this->protect_identifiers($field_name_hash));
+            $select .= $this->build_concat_from_template($related_field_title, $this->ESCAPE_CHAR, $this->ESCAPE_CHAR, $this->protect_identifiers($field_name_hash));
     	} else {
 	    	$select .= $this->protect_identifiers($related_table.'.'.$related_field_title) . ' as ' . $this->protect_identifiers($field_name_hash);
     	}
@@ -247,7 +256,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
     	$field_name_hash = $this->_unique_field_name($related_field_title);
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            	$select .= $this->build_concat_from_template(
+            $select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
@@ -291,7 +300,7 @@ class grocery_CRUD_Generic_Model extends grocery_CRUD_Model  {
 
     	if($use_template) {
     		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-            	$select .= $this->build_concat_from_template(
+            $select .= $this->build_concat_from_template(
                 $related_field_title,
                 $this->ESCAPE_CHAR,
                 $this->ESCAPE_CHAR,
