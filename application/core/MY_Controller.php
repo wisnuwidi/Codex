@@ -2,6 +2,10 @@
 /**
  * Filename: MY_Controller.php
  * Created at: 4:38:27 PM
+ *
+ * Email: wisnuwidi@yahoo.com
+ * Copyright (c) 2016 Indsites
+ * http://www.indsites.com
  */
 
 
