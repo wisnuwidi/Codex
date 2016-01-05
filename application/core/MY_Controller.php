@@ -7,7 +7,7 @@
  * Copyright (c) 2016 Indsites
  * http://www.indsites.com
  */
-
+require_once 'application/core/MY_Auth.php';
 
 class MY_Controller extends CI_Controller {
     public $systemPath = 'system/crud/';
@@ -40,5 +40,10 @@ class MY_Controller extends CI_Controller {
 
     public function render($file, $output = null) {
         return $this->load->view($file, $output);
+    }
+
+    public function authentication() {
+        $auth = new MY_Auth();
+        return $auth->index();
     }
 }

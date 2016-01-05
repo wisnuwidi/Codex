@@ -8,8 +8,8 @@ class grocery_crud_model_Postgre extends grocery_CRUD_Generic_Model {
     public function __construct(){
         parent::__construct();
 
-        $test = $this->protect_identifiers('t');
-        $first_char = substr($test,0,1);
+        $t = $this->protect_identifiers('t');
+        $first_char = substr($t, 0, 1);
         if($first_char !== 't'){
             $this->ESCAPE_CHAR = $first_char;
         }
@@ -190,7 +190,7 @@ class grocery_crud_model_Postgre extends grocery_CRUD_Generic_Model {
 
     function build_db_join_relation($related_table, $unique_name, $related_primary_key, $field_name) {
         $onString1 = str_replace('"', ' ', $this->protect_identifiers($unique_name.'.'.$related_primary_key));
-        $onString2 = str_replace('"', ' ', $this->protect_identifiers($this->table_name.'.'.$field_name));//var_dump($onString2);exit;
+        $onString2 = str_replace('"', ' ', $this->protect_identifiers($this->table_name.'.'.$field_name));
         $this->db->join("{$this->protect_identifiers($related_table)} as {$this->protect_identifiers($unique_name)}", "{$onString1} = {$onString2}",'left');
     }
 
