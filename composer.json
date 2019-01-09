@@ -1,0 +1,12 @@
+{
+	"name"				: "wisnuwidi/Codex",
+	"description"		: "Lock",
+	"type"				: "library",
+	"keywords"			: ["library", "lock"],
+	"license"			: "MIT",
+	"authors"			: [{
+		"name"			: "wisnuwidi",
+		"email"			: "wisnuwidi@gmail.com"
+	}],
+	"minimum-stability"	: "dev"
+}
